@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Internal Audit Skills Lab</title>
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+  <div class="cover-screen" id="cover-screen">
+    <div class="cover-card">
+      <div class="cover-seal">
+        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M12 3v18M5 7l-3 6a3 3 0 006 0zM19 7l-3 6a3 3 0 006 0zM5 7h14M9 21h6"/>
+        </svg>
+      </div>
+      <h1>Internal Audit Skills Lab</h1>
+      <div class="cover-sub">Case AR-2031 &middot; Procure-to-Pay Walkthrough</div>
+      <p class="desc">Three purchase orders. One vendor. One day. Something doesn't add up &mdash; review the evidence, interview the process owners, and build your finding.</p>
+      <input type="text" id="student-name" placeholder="Enter your name to open the case" />
+      <button class="btn-primary" id="start-btn">Open Case File</button>
+    </div>
+  </div>
+
+  <div class="app-shell app-hidden" id="app-shell">
+    <div class="app-header">
+      <h1>Internal Audit Skills Lab</h1>
+      <div class="case-meta">
+        CASE NO. AR-2031 &middot; Al Rawda Trading Co.
+        <div class="progress-pill" id="progress-pill">0 / 6 evidence unlocked</div>
+      </div>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div class="panel" id="panel"></div>
+    <div class="footer-row">
+      <span class="mono" style="font-size:10px;color:#59503F;">Internal Audit Skills Lab &middot; procure-to-pay walkthrough</span>
+      <span class="mono btn danger" id="reset-case" style="padding:6px 12px;font-size:10px;">Reset case</span>
+    </div>
+  </div>
+
+  <script src="/scenario-data.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
