@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
       .map((m) => ({ role: m.role === 'user' ? 'user' : 'model', parts: [{ text: m.text }] }));
     contents.push({ role: 'user', parts: [{ text }] });
 
-    let reply = await callGemini(personaDef.system, contents, 300);
+    let reply = await callGemini(personaDef.system, contents, 500);
 
     let unlockedId = null;
     const unlockMatch = reply.match(/^\[\[UNLOCK:([a-z0-9-]+)\]\]\s*/i);
