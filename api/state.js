@@ -4,15 +4,16 @@ module.exports = async (req, res) => {
   try {
     if (req.method === 'GET') {
       const studentId = (req.query.studentId || '').trim();
-      if (!studentId) return res.status(400).json({ error: 'studentId is required' });
-      const progress = await loadProgress(studentId);
+      const caseId = (req.query.caseId || '').trim();
+      if (!studentId || !caseId) return res.status(400).json({ error: 'studentId and caseId are required' });
+      const progress = await loadProgress(studentId, caseId);
       return res.status(200).json(progress);
     }
 
     if (req.method === 'POST') {
-      const { studentId, patch } = req.body || {};
-      if (!studentId) return res.status(400).json({ error: 'studentId is required' });
-      const merged = await saveProgress(studentId, patch || {});
+      const { studentId, caseId, patch } = req.body || {};
+      if (!studentId || !caseId) return res.status(400).json({ error: 'studentId and caseId are required' });
+      const merged = await saveProgress(studentId, caseId, patch || {});
       return res.status(200).json(merged);
     }
 

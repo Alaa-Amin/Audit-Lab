@@ -1,6 +1,6 @@
 const { callGemini } = require('../lib/gemini');
 const { loadProgress, saveProgress } = require('../lib/db');
-const { PERSONAS } = require('../lib/scenario-secrets');
+const { SCENARIOS } = require('../lib/scenario-secrets');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -9,14 +9,16 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { studentId, persona, text } = req.body || {};
-    if (!studentId || !persona || !text) {
-      return res.status(400).json({ error: 'studentId, persona and text are all required' });
+    const { studentId, caseId, persona, text } = req.body || {};
+    if (!studentId || !caseId || !persona || !text) {
+      return res.status(400).json({ error: 'studentId, caseId, persona and text are all required' });
     }
-    const personaDef = PERSONAS[persona];
+    const scenario = SCENARIOS[caseId];
+    if (!scenario) return res.status(400).json({ error: 'Unknown case' });
+    const personaDef = scenario.personas[persona];
     if (!personaDef) return res.status(400).json({ error: 'Unknown persona' });
 
-    const progress = await loadProgress(studentId);
+    const progress = await loadProgress(studentId, caseId);
     const history = progress.messages[persona] || [];
 
     const contents = history
@@ -41,7 +43,7 @@ module.exports = async (req, res) => {
       ? [...progress.unlocked, unlockedId]
       : progress.unlocked;
 
-    await saveProgress(studentId, { messages: newMessages, unlocked: newUnlocked });
+    await saveProgress(studentId, caseId, { messages: newMessages, unlocked: newUnlocked });
 
     return res.status(200).json({ reply, unlocked: unlockedId, unlockedList: newUnlocked });
   } catch (err) {

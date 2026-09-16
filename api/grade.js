@@ -1,12 +1,6 @@
 const { callGemini } = require('../lib/gemini');
 const { saveProgress } = require('../lib/db');
-const { GRADING_SYSTEM } = require('../lib/scenario-secrets');
-
-const DOC_TITLES = {
-  'po-1042': 'PO-1042', 'po-1043': 'PO-1043', 'po-1044': 'PO-1044',
-  policy: 'Procurement Policy Section 4.2', vendor: 'Vendor Master - Gulf Office Supplies',
-  'email-042': 'Email Thread - Procurement & Vendor',
-};
+const { SCENARIOS } = require('../lib/scenario-secrets');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -15,19 +9,21 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { studentId, findings } = req.body || {};
-    if (!studentId || !Array.isArray(findings) || findings.length === 0) {
-      return res.status(400).json({ error: 'studentId and at least one finding are required' });
+    const { studentId, caseId, findings } = req.body || {};
+    if (!studentId || !caseId || !Array.isArray(findings) || findings.length === 0) {
+      return res.status(400).json({ error: 'studentId, caseId and at least one finding are required' });
     }
+    const scenario = SCENARIOS[caseId];
+    if (!scenario) return res.status(400).json({ error: 'Unknown case' });
 
     const submissionText = findings
       .map((f, i) => {
-        const ev = (f.evidence || []).map((id) => DOC_TITLES[id] || id).join(', ') || 'none referenced';
+        const ev = (f.evidenceTitles || f.evidence || []).join(', ') || 'none referenced';
         return `Finding ${i + 1}:\nTitle: ${f.title}\nCriteria: ${f.criteria}\nCondition: ${f.condition}\nCause: ${f.cause}\nRisk/Effect: ${f.effect}\nRecommendation: ${f.recommendation}\nEvidence referenced: ${ev}`;
       })
       .join('\n\n');
 
-    const raw = await callGemini(GRADING_SYSTEM, [{ role: 'user', parts: [{ text: submissionText }] }], 800);
+    const raw = await callGemini(scenario.gradingSystem, [{ role: 'user', parts: [{ text: submissionText }] }], 800);
     const cleaned = raw.replace(/```json|```/g, '').trim();
 
     let verdict;
@@ -43,7 +39,7 @@ module.exports = async (req, res) => {
       };
     }
 
-    await saveProgress(studentId, { findings, verdict });
+    await saveProgress(studentId, caseId, { findings, verdict });
     return res.status(200).json(verdict);
   } catch (err) {
     console.error(err);

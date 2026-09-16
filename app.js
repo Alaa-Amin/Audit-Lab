@@ -1,20 +1,32 @@
 (function () {
-  const S = window.SCENARIO;
   const ICONS = {
-    doc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h6M9 17h6"/></svg>',
-    scale: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v18M5 7l-3 6a3 3 0 006 0zM19 7l-3 6a3 3 0 006 0zM5 7h14M9 21h6"/></svg>',
-    building: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 21V6l8-4 8 4v15"/><path d="M9 21v-6h6v6M9 10h.01M12 10h.01M15 10h.01M9 14h.01M15 14h.01"/></svg>',
-    mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
-    lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>',
+    doc: `<svg viewBox="0 0 80 80"><rect x="14" y="8" width="44" height="60" rx="3" fill="var(--paper-white)" stroke="var(--ink-soft)" stroke-width="1.5"/><path d="M46 8v10h12z" fill="var(--manila-dark)"/><rect x="20" y="14" width="20" height="4" rx="1" fill="var(--green)"/><rect x="20" y="24" width="26" height="2.5" rx="1" fill="var(--line)"/><rect x="20" y="30" width="26" height="2.5" rx="1" fill="var(--line)"/><rect x="20" y="36" width="18" height="2.5" rx="1" fill="var(--line)"/><rect x="20" y="46" width="26" height="2.5" rx="1" fill="var(--line)"/><rect x="20" y="52" width="20" height="2.5" rx="1" fill="var(--line)"/><circle cx="54" cy="58" r="12" fill="none" stroke="var(--brass)" stroke-width="2"/><text x="54" y="61" font-family="IBM Plex Mono, monospace" font-size="8" font-weight="700" fill="var(--brass)" text-anchor="middle">PO</text></svg>`,
+    scale: `<svg viewBox="0 0 80 80"><rect x="14" y="8" width="44" height="60" rx="3" fill="var(--paper-white)" stroke="var(--ink-soft)" stroke-width="1.5"/><rect x="20" y="16" width="26" height="4" rx="1" fill="var(--green)"/><rect x="20" y="26" width="26" height="2.5" rx="1" fill="var(--line)"/><rect x="20" y="32" width="26" height="2.5" rx="1" fill="var(--line)"/><rect x="20" y="38" width="20" height="2.5" rx="1" fill="var(--line)"/><g transform="translate(28,46)" fill="none" stroke="var(--brass)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 0v20M0 4l-6 10a5 5 0 0010 0zM16 4l-6 10a5 5 0 0010 0zM0 4h16M4 24h8"/></g></svg>`,
+    building: `<svg viewBox="0 0 80 80"><rect x="16" y="30" width="48" height="38" fill="var(--paper-white)" stroke="var(--ink-soft)" stroke-width="1.5"/><path d="M12 32L40 12l28 20" fill="none" stroke="var(--ink-soft)" stroke-width="1.5" stroke-linejoin="round"/><rect x="24" y="40" width="8" height="8" fill="var(--brass)"/><rect x="36" y="40" width="8" height="8" fill="var(--brass)"/><rect x="48" y="40" width="8" height="8" fill="var(--brass)"/><rect x="24" y="52" width="8" height="8" fill="var(--green)"/><rect x="48" y="52" width="8" height="8" fill="var(--green)"/><rect x="35" y="54" width="10" height="14" fill="var(--ink-soft)"/></svg>`,
+    mail: `<svg viewBox="0 0 80 80"><rect x="10" y="20" width="60" height="42" rx="4" fill="var(--paper-white)" stroke="var(--ink-soft)" stroke-width="1.5"/><path d="M10 24l30 22 30-22" fill="none" stroke="var(--ink-soft)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="60" cy="20" r="11" fill="var(--red)"/><text x="60" y="24" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="700" fill="var(--paper)" text-anchor="middle">!</text></svg>`,
+    lock: `<svg viewBox="0 0 80 80"><rect x="22" y="38" width="36" height="30" rx="4" fill="var(--manila-dark)" stroke="var(--ink-soft)" stroke-width="1.5"/><path d="M30 38v-8a10 10 0 0120 0v8" fill="none" stroke="var(--ink-soft)" stroke-width="2.5"/><circle cx="40" cy="52" r="4" fill="var(--ink-soft)"/><rect x="38" y="54" width="4" height="8" fill="var(--ink-soft)"/></svg>`,
   };
 
+  const PORTRAITS = {
+    ahmad: `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="var(--manila-dark)"/><path d="M20 100c0-18 13-30 30-30s30 12 30 30z" fill="var(--green)"/><circle cx="50" cy="40" r="20" fill="#D9AE82"/><path d="M30 34a20 20 0 0140-2c0-10-9-18-20-18s-20 8-20 18z" fill="#3B2A1E"/><path d="M42 74l8 8 8-8" fill="none" stroke="var(--paper)" stroke-width="2"/></svg>`,
+    fatima: `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="var(--manila-dark)"/><path d="M22 100c0-18 13-30 28-30s28 12 28 30z" fill="var(--green)"/><path d="M50 14c-16 0-26 12-26 28 0 10 4 18 10 24h32c6-6 10-14 10-24 0-16-10-28-26-28z" fill="var(--brass)"/><circle cx="50" cy="42" r="16" fill="#D9AE82"/></svg>`,
+    noor: `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="var(--manila-dark)"/><path d="M22 100c0-18 13-30 28-30s28 12 28 30z" fill="var(--brass)"/><path d="M50 14c-16 0-26 12-26 28 0 10 4 18 10 24h32c6-6 10-14 10-24 0-16-10-28-26-28z" fill="var(--green-light)"/><circle cx="50" cy="42" r="16" fill="#D9AE82"/></svg>`,
+    hamad: `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="var(--manila-dark)"/><path d="M20 100c0-18 13-30 30-30s30 12 30 30z" fill="var(--ink)"/><circle cx="50" cy="40" r="20" fill="#D9AE82"/><path d="M30 30a20 20 0 0140 2v-4c0-10-9-18-20-18s-20 8-20 18z" fill="#2A2018"/><rect x="38" y="47" width="24" height="5" rx="2" fill="#2A2018"/><path d="M42 74l8 8 8-8" fill="none" stroke="var(--paper)" stroke-width="2"/></svg>`,
+  };
+
+  const HERO = `<svg viewBox="0 0 220 160"><rect x="0" y="120" width="220" height="40" fill="var(--manila-dark)"/><rect x="30" y="70" width="120" height="70" rx="4" fill="var(--green)"/><rect x="40" y="60" width="100" height="16" rx="2" fill="var(--green-light)"/><rect x="45" y="80" width="90" height="6" fill="var(--paper)"/><rect x="45" y="92" width="70" height="6" fill="var(--paper)"/><rect x="45" y="104" width="80" height="6" fill="var(--paper)"/><g transform="translate(140,30)"><circle cx="0" cy="0" r="22" fill="none" stroke="var(--brass)" stroke-width="5"/><line x1="16" y1="16" x2="40" y2="40" stroke="var(--brass)" stroke-width="6" stroke-linecap="round"/></g><g transform="translate(165,95) rotate(-12)"><circle cx="0" cy="0" r="24" fill="none" stroke="var(--red)" stroke-width="3"/><text x="0" y="4" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="700" fill="var(--red)" text-anchor="middle">CASE</text></g></svg>`;
+  const heroSlot = document.getElementById('cover-hero');
+  if (heroSlot) heroSlot.innerHTML = HERO;
+
   let studentId = null;
+  let caseId = null;
   let progress = null;
   let activeTab = 'case';
-  let activePersona = 'ahmad';
+  let activePersona = null;
   let openDoc = null;
 
   const el = (id) => document.getElementById(id);
+  const CASE = () => window.CASES[caseId];
 
   function blankFinding() { return { title: '', criteria: '', condition: '', cause: '', effect: '', recommendation: '', evidence: [] }; }
 
@@ -28,7 +40,7 @@
   }
 
   async function loadState() {
-    progress = await api(`/api/state?studentId=${encodeURIComponent(studentId)}`);
+    progress = await api(`/api/state?studentId=${encodeURIComponent(studentId)}&caseId=${encodeURIComponent(caseId)}`);
     if (!progress.findings || progress.findings.length === 0) progress.findings = [blankFinding()];
   }
 
@@ -37,24 +49,67 @@
     await api('/api/state', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ studentId, patch }),
+      body: JSON.stringify({ studentId, caseId, patch }),
     });
   }
 
   function switchTab(t) { activeTab = t; renderApp(); }
 
+  // ---------- Case selection screen ----------
+  function renderCaseList() {
+    const listEl = el('case-list');
+    listEl.innerHTML = window.CASE_LIST.map((c) => `
+      <div class="case-pick" data-case="${c.id}">
+        <div class="case-pick-meta mono">CASE ${c.caseNumber} &middot; ${c.department}</div>
+        <div class="case-pick-title">${c.title}</div>
+        <div class="case-pick-blurb">${c.listBlurb}</div>
+      </div>
+    `).join('');
+    [...listEl.querySelectorAll('.case-pick')].forEach((n) => n.addEventListener('click', () => openCase(n.dataset.case)));
+  }
+
+  async function openCase(id) {
+    caseId = id;
+    activePersona = Object.keys(CASE().personas)[0];
+    openDoc = null; activeTab = 'case';
+    try {
+      await loadState();
+      el('case-select-screen').classList.add('app-hidden');
+      const shell = el('app-shell');
+      shell.classList.remove('app-hidden');
+      shell.classList.add('app-fade-in');
+      el('app-case-title').textContent = CASE().title;
+      el('app-case-meta-line').textContent = `CASE NO. ${CASE().caseNumber} \u00b7 ${CASE().company}`;
+      updateProgressPill();
+      renderApp();
+    } catch (e) {
+      alert('Could not open the case: ' + e.message);
+    }
+  }
+
+  function backToCaseList() {
+    caseId = null; progress = null;
+    el('app-shell').classList.add('app-hidden');
+    const sel = el('case-select-screen');
+    sel.classList.remove('app-hidden');
+    sel.classList.add('app-fade-in');
+  }
+
+  // ---------- Tabs ----------
   function renderTabs() {
     const defs = [['case', 'Case File'], ['interview', 'Interview'], ['findings', 'Findings'], ['verdict', 'Verdict']];
     el('tabs').innerHTML = defs.map(([id, label]) => {
-      const dot = id === 'case' && progress.unlocked.includes('email-042') ? '<span class="dot"></span>' : '';
+      const lockedDoc = CASE().documents.find((d) => d.locked);
+      const dot = id === 'case' && lockedDoc && progress.unlocked.includes(lockedDoc.id) ? '<span class="dot"></span>' : '';
       return `<div class="tab ${activeTab === id ? 'active' : ''}" data-tab="${id}">${label}${dot}</div>`;
     }).join('');
     [...el('tabs').querySelectorAll('.tab')].forEach((n) => n.addEventListener('click', () => switchTab(n.dataset.tab)));
   }
 
   function renderCaseFile() {
+    const docs = CASE().documents;
     if (openDoc) {
-      const doc = S.documents.find((d) => d.id === openDoc);
+      const doc = docs.find((d) => d.id === openDoc);
       return `
         <div class="back-link" id="back-link">&larr; back to case file</div>
         <div class="mono" style="font-size:10px;color:#9C7A3C;text-transform:uppercase;">${doc.tag}</div>
@@ -62,7 +117,7 @@
         <div class="doc-detail"><table>${doc.rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>
       `;
     }
-    const cards = S.documents.map((d) => {
+    const cards = docs.map((d) => {
       const locked = !progress.unlocked.includes(d.id);
       return `
         <div class="doc-card ${locked ? 'locked' : ''}" data-doc="${d.id}">
@@ -74,28 +129,27 @@
           </div>
         </div>`;
     }).join('');
-    return `<div class="brief"><span class="mono">Audit brief</span>${S.brief}</div><div class="doc-grid">${cards}</div>`;
+    return `<div class="brief"><span class="mono">Audit brief</span>${CASE().brief}</div><div class="doc-grid">${cards}</div>`;
   }
 
   function renderInterview() {
-    const p = S.personas;
-    const msgs = progress.messages[activePersona] || [];
+    const personas = CASE().personas;
+    const msgs = (progress.messages[activePersona] || []);
     const msgHtml = msgs.length ? msgs.map((m) => {
       if (m.unlock) {
-        const doc = S.documents.find((d) => d.id === m.unlock);
+        const doc = CASE().documents.find((d) => d.id === m.unlock);
         return `<div class="unlock-note">${ICONS.lock}<span>New evidence unlocked in the Case File: ${doc ? doc.title : m.unlock}</span></div>`;
       }
-      const persona = p[activePersona];
       return `
         <div class="msg ${m.role === 'user' ? 'student' : 'persona'}">
-          ${m.role === 'user' ? '' : `<div class="avatar" style="background:${persona.color}">${persona.initials}</div>`}
+          ${m.role === 'user' ? '' : `<div class="avatar small">${PORTRAITS[activePersona] || ''}</div>`}
           <div class="bubble">${m.text}</div>
         </div>`;
-    }).join('') : `<div class="msg-empty">Interview not started. Ask ${p[activePersona].name} a question about the three purchase orders.</div>`;
+    }).join('') : `<div class="msg-empty">Interview not started. Ask ${personas[activePersona].name} a question.</div>`;
 
-    const personaButtons = Object.entries(p).map(([id, def]) => `
+    const personaButtons = Object.entries(personas).map(([id, def]) => `
       <div class="persona-btn ${activePersona === id ? 'active' : ''}" data-persona="${id}">
-        <div class="avatar" style="background:${def.color}">${def.initials}</div>
+        <div class="avatar">${PORTRAITS[id] || ''}</div>
         ${def.name} - ${def.role}
       </div>`).join('');
 
@@ -110,10 +164,12 @@
   }
 
   function renderFindings() {
+    const fields = window.FINDING_FIELDS;
+    const docs = CASE().documents;
     const blocks = progress.findings.map((f, i) => `
       <div class="finding-block">
         <div class="finding-num">FINDING ${i + 1}${progress.findings.length > 1 ? `<span class="remove" data-remove="${i}">remove</span>` : ''}</div>
-        ${S.findingFields.map((fld) => `
+        ${fields.map((fld) => `
           <div class="field">
             <label>${fld.label}</label>
             ${fld.kind === 'input'
@@ -123,7 +179,7 @@
         <div class="field">
           <label>Evidence referenced</label>
           <div class="evidence-list">
-            ${S.documents.filter((d) => progress.unlocked.includes(d.id)).map((d) => `
+            ${docs.filter((d) => progress.unlocked.includes(d.id)).map((d) => `
               <div class="evidence-chip ${f.evidence.includes(d.id) ? 'checked' : ''}" data-f="${i}" data-ev="${d.id}">${d.title}</div>
             `).join('')}
           </div>
@@ -183,16 +239,13 @@
         input.value = '';
         send.disabled = true; send.textContent = '...';
         try {
-          const result = await api('/api/chat', {
+          await api('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ studentId, persona: activePersona, text }),
+            body: JSON.stringify({ studentId, caseId, persona: activePersona, text }),
           });
           await loadState();
           renderApp();
-          if (result.unlocked) {
-            // brief highlight handled via the unlock-note already rendered in history
-          }
         } catch (e) {
           alert(e.message);
         } finally {
@@ -223,11 +276,16 @@
       const submit = el('submit-verdict');
       if (submit) submit.addEventListener('click', async () => {
         progress.verdict = 'loading'; activeTab = 'verdict'; renderApp();
+        const docs = CASE().documents;
+        const findingsWithTitles = progress.findings.map((f) => ({
+          ...f,
+          evidenceTitles: f.evidence.map((id) => { const d = docs.find((x) => x.id === id); return d ? d.title : id; }),
+        }));
         try {
           const verdict = await api('/api/grade', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ studentId, findings: progress.findings }),
+            body: JSON.stringify({ studentId, caseId, findings: findingsWithTitles }),
           });
           progress.verdict = verdict;
         } catch (e) {
@@ -239,37 +297,31 @@
   }
 
   function updateProgressPill() {
-    const total = S.documents.length;
+    const total = CASE().documents.length;
     const unlocked = progress.unlocked.length;
     el('progress-pill').textContent = `${unlocked} / ${total} evidence unlocked`;
   }
 
-  async function startCase() {
+  async function startFlow() {
     const nameInput = el('student-name');
     const name = nameInput.value.trim();
     if (!name) { nameInput.focus(); return; }
     studentId = name.toLowerCase().replace(/\s+/g, '-');
-    const startBtn = el('start-btn');
-    startBtn.disabled = true; startBtn.textContent = 'Opening case file...';
-    try {
-      await loadState();
-      el('cover-screen').classList.add('app-hidden');
-      const shell = el('app-shell');
-      shell.classList.remove('app-hidden');
-      shell.classList.add('app-fade-in');
-      updateProgressPill();
-      renderApp();
-    } catch (e) {
-      alert('Could not open the case: ' + e.message);
-      startBtn.disabled = false; startBtn.textContent = 'Open Case File';
-    }
+    el('cover-screen').classList.add('app-hidden');
+    const sel = el('case-select-screen');
+    sel.classList.remove('app-hidden');
+    sel.classList.add('app-fade-in');
+    renderCaseList();
   }
 
-  el('start-btn').addEventListener('click', startCase);
-  el('student-name').addEventListener('keydown', (e) => { if (e.key === 'Enter') startCase(); });
+  el('start-btn').addEventListener('click', startFlow);
+  el('student-name').addEventListener('keydown', (e) => { if (e.key === 'Enter') startFlow(); });
+  el('back-to-cases').addEventListener('click', backToCaseList);
   el('reset-case').addEventListener('click', async () => {
     if (!confirm('Reset all progress for this case? This cannot be undone.')) return;
-    await saveState({ unlocked: ['po-1042', 'po-1043', 'po-1044', 'policy', 'vendor'], messages: { ahmad: [], fatima: [] }, findings: [blankFinding()], verdict: null });
+    const defaults = { unlocked: window.CASES[caseId].documents.filter((d) => !d.locked).map((d) => d.id), messages: {}, findings: [blankFinding()], verdict: null };
+    Object.keys(CASE().personas).forEach((id) => { defaults.messages[id] = []; });
+    await saveState(defaults);
     openDoc = null; activeTab = 'case';
     updateProgressPill();
     renderApp();
