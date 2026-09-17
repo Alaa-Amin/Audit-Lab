@@ -18,6 +18,7 @@
   const heroSlot = document.getElementById('cover-hero');
   if (heroSlot) heroSlot.innerHTML = HERO;
 
+  let lang = localStorage.getItem('auditlab-lang') || 'en';
   let studentId = null;
   let caseId = null;
   let progress = null;
@@ -27,6 +28,14 @@
 
   const el = (id) => document.getElementById(id);
   const CASE = () => window.CASES[caseId];
+  function t(key, ...args) {
+    const v = window.UI_STRINGS[lang][key];
+    return typeof v === 'function' ? v(...args) : v;
+  }
+  function fieldLabel(key) {
+    const fld = window.FINDING_FIELDS.find((f) => f.key === key);
+    return fld ? fld.label[lang] : key;
+  }
 
   function blankFinding() { return { title: '', criteria: '', condition: '', cause: '', effect: '', recommendation: '', evidence: [] }; }
 
@@ -53,16 +62,49 @@
     });
   }
 
-  function switchTab(t) { activeTab = t; renderApp(); }
+  function switchTab(tab) { activeTab = tab; renderApp(); }
+
+  // ---------- Language ----------
+  function applyDir() {
+    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', lang === 'ar' ? 'ar' : 'en');
+  }
+
+  function applyStaticText() {
+    el('cover-title').textContent = t('app_title');
+    el('cover-sub').textContent = t('cover_sub');
+    el('cover-desc').textContent = t('cover_desc');
+    el('student-name').placeholder = t('name_placeholder');
+    el('start-btn').textContent = t('continue_btn');
+    el('universe-sub').textContent = t('universe_sub');
+    el('choose-case-title').textContent = t('choose_case');
+    el('back-to-cases').textContent = t('all_cases');
+    el('reset-case').textContent = t('reset_case');
+    document.querySelectorAll('.lang-toggle-btn').forEach((b) => { b.textContent = t('lang_toggle'); });
+  }
+
+  function toggleLang() {
+    lang = lang === 'en' ? 'ar' : 'en';
+    localStorage.setItem('auditlab-lang', lang);
+    applyDir();
+    applyStaticText();
+    if (!el('case-select-screen').classList.contains('app-hidden')) renderCaseList();
+    if (!el('app-shell').classList.contains('app-hidden')) {
+      el('app-case-title').textContent = CASE().title[lang];
+      el('app-case-meta-line').textContent = `${CASE().caseNumber} \u00b7 ${CASE().company[lang]}`;
+      updateProgressPill();
+      renderApp();
+    }
+  }
 
   // ---------- Case selection screen ----------
   function renderCaseList() {
     const listEl = el('case-list');
     listEl.innerHTML = window.CASE_LIST.map((c) => `
       <div class="case-pick" data-case="${c.id}">
-        <div class="case-pick-meta mono">CASE ${c.caseNumber} &middot; ${c.department}</div>
-        <div class="case-pick-title">${c.title}</div>
-        <div class="case-pick-blurb">${c.listBlurb}</div>
+        <div class="case-pick-meta mono">${c.caseNumber} &middot; ${c.department[lang]}</div>
+        <div class="case-pick-title">${c.title[lang]}</div>
+        <div class="case-pick-blurb">${c.listBlurb[lang]}</div>
       </div>
     `).join('');
     [...listEl.querySelectorAll('.case-pick')].forEach((n) => n.addEventListener('click', () => openCase(n.dataset.case)));
@@ -78,12 +120,12 @@
       const shell = el('app-shell');
       shell.classList.remove('app-hidden');
       shell.classList.add('app-fade-in');
-      el('app-case-title').textContent = CASE().title;
-      el('app-case-meta-line').textContent = `CASE NO. ${CASE().caseNumber} \u00b7 ${CASE().company}`;
+      el('app-case-title').textContent = CASE().title[lang];
+      el('app-case-meta-line').textContent = `${CASE().caseNumber} \u00b7 ${CASE().company[lang]}`;
       updateProgressPill();
       renderApp();
     } catch (e) {
-      alert('Could not open the case: ' + e.message);
+      alert(t('could_not_open') + e.message);
     }
   }
 
@@ -97,7 +139,7 @@
 
   // ---------- Tabs ----------
   function renderTabs() {
-    const defs = [['case', 'Case File'], ['interview', 'Interview'], ['findings', 'Findings'], ['verdict', 'Verdict']];
+    const defs = [['case', t('tab_case')], ['interview', t('tab_interview')], ['findings', t('tab_findings')], ['verdict', t('tab_verdict')]];
     el('tabs').innerHTML = defs.map(([id, label]) => {
       const lockedDoc = CASE().documents.find((d) => d.locked);
       const dot = id === 'case' && lockedDoc && progress.unlocked.includes(lockedDoc.id) ? '<span class="dot"></span>' : '';
@@ -110,26 +152,28 @@
     const docs = CASE().documents;
     if (openDoc) {
       const doc = docs.find((d) => d.id === openDoc);
+      const dl = doc[lang];
       return `
-        <div class="back-link" id="back-link">&larr; back to case file</div>
-        <div class="mono" style="font-size:10px;color:#9C7A3C;text-transform:uppercase;">${doc.tag}</div>
-        <h2 style="margin:4px 0 12px 0;font-size:18px;">${doc.title}</h2>
-        <div class="doc-detail"><table>${doc.rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>
+        <div class="back-link" id="back-link">${t('back_to_case_file')}</div>
+        <div class="mono" style="font-size:10px;color:var(--brass);text-transform:uppercase;">${dl.tag}</div>
+        <h2 style="margin:4px 0 12px 0;font-size:18px;">${dl.title}</h2>
+        <div class="doc-detail"><table>${dl.rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>
       `;
     }
     const cards = docs.map((d) => {
       const locked = !progress.unlocked.includes(d.id);
+      const dl = d[lang];
       return `
         <div class="doc-card ${locked ? 'locked' : ''}" data-doc="${d.id}">
           <div class="doc-icon">${locked ? ICONS.lock : ICONS[d.icon]}</div>
           <div>
-            <div class="doc-tag">${d.tag}</div>
-            <div class="doc-title">${locked ? 'Restricted' : d.title}</div>
-            <div class="doc-hint">${locked ? 'Not yet available - keep interviewing' : 'Click to open'}</div>
+            <div class="doc-tag">${dl.tag}</div>
+            <div class="doc-title">${locked ? t('doc_restricted') : dl.title}</div>
+            <div class="doc-hint">${locked ? t('doc_locked_hint') : t('doc_open_hint')}</div>
           </div>
         </div>`;
     }).join('');
-    return `<div class="brief"><span class="mono">Audit brief</span>${CASE().brief}</div><div class="doc-grid">${cards}</div>`;
+    return `<div class="brief"><span class="mono">${t('audit_brief')}</span>${CASE().brief[lang]}</div><div class="doc-grid">${cards}</div>`;
   }
 
   function renderInterview() {
@@ -138,27 +182,27 @@
     const msgHtml = msgs.length ? msgs.map((m) => {
       if (m.unlock) {
         const doc = CASE().documents.find((d) => d.id === m.unlock);
-        return `<div class="unlock-note">${ICONS.lock}<span>New evidence unlocked in the Case File: ${doc ? doc.title : m.unlock}</span></div>`;
+        return `<div class="unlock-note">${ICONS.lock}<span>${t('evidence_unlocked')} ${doc ? doc[lang].title : m.unlock}</span></div>`;
       }
       return `
         <div class="msg ${m.role === 'user' ? 'student' : 'persona'}">
           ${m.role === 'user' ? '' : `<div class="avatar small">${PORTRAITS[activePersona] || ''}</div>`}
           <div class="bubble">${m.text}</div>
         </div>`;
-    }).join('') : `<div class="msg-empty">Interview not started. Ask ${personas[activePersona].name} a question.</div>`;
+    }).join('') : `<div class="msg-empty">${t('interview_not_started', personas[activePersona][lang].name)}</div>`;
 
     const personaButtons = Object.entries(personas).map(([id, def]) => `
       <div class="persona-btn ${activePersona === id ? 'active' : ''}" data-persona="${id}">
         <div class="avatar">${PORTRAITS[id] || ''}</div>
-        ${def.name} - ${def.role}
+        ${def[lang].name} - ${def[lang].role}
       </div>`).join('');
 
     return `
       <div class="persona-select">${personaButtons}</div>
       <div class="chat-window" id="chat-window">${msgHtml}</div>
       <div class="chat-input-row">
-        <input type="text" id="chat-text" placeholder="Ask a question..." />
-        <button class="btn" id="chat-send">Ask</button>
+        <input type="text" id="chat-text" placeholder="${t('ask_placeholder')}" />
+        <button class="btn" id="chat-send">${t('ask_btn')}</button>
       </div>
     `;
   }
@@ -168,19 +212,19 @@
     const docs = CASE().documents;
     const blocks = progress.findings.map((f, i) => `
       <div class="finding-block">
-        <div class="finding-num">FINDING ${i + 1}${progress.findings.length > 1 ? `<span class="remove" data-remove="${i}">remove</span>` : ''}</div>
+        <div class="finding-num">${i + 1}${progress.findings.length > 1 ? `<span class="remove" data-remove="${i}">${t('remove')}</span>` : ''}</div>
         ${fields.map((fld) => `
           <div class="field">
-            <label>${fld.label}</label>
+            <label>${fld.label[lang]}</label>
             ${fld.kind === 'input'
               ? `<input type="text" data-f="${i}" data-k="${fld.key}" value="${(f[fld.key] || '').replace(/"/g, '&quot;')}" />`
               : `<textarea rows="2" data-f="${i}" data-k="${fld.key}">${f[fld.key] || ''}</textarea>`}
           </div>`).join('')}
         <div class="field">
-          <label>Evidence referenced</label>
+          <label>${t('evidence_referenced')}</label>
           <div class="evidence-list">
             ${docs.filter((d) => progress.unlocked.includes(d.id)).map((d) => `
-              <div class="evidence-chip ${f.evidence.includes(d.id) ? 'checked' : ''}" data-f="${i}" data-ev="${d.id}">${d.title}</div>
+              <div class="evidence-chip ${f.evidence.includes(d.id) ? 'checked' : ''}" data-f="${i}" data-ev="${d.id}">${d[lang].title}</div>
             `).join('')}
           </div>
         </div>
@@ -189,21 +233,22 @@
     return `
       ${blocks}
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <button class="btn secondary" id="add-finding">+ Add another finding</button>
-        <button class="btn" id="submit-verdict">Submit for grading</button>
+        <button class="btn secondary" id="add-finding">${t('add_finding')}</button>
+        <button class="btn" id="submit-verdict">${t('submit_grading')}</button>
       </div>
     `;
   }
 
   function renderVerdict() {
-    if (!progress.verdict) return `<div class="verdict-empty">No submission graded yet.<br>Complete your finding(s) and submit from the Findings tab.</div>`;
-    if (progress.verdict === 'loading') return `<div class="verdict-empty loading-text">Reviewing your submission against the case facts...</div>`;
+    if (!progress.verdict) return `<div class="verdict-empty">${t('no_verdict')}</div>`;
+    if (progress.verdict === 'loading') return `<div class="verdict-empty loading-text">${t('grading_loading')}</div>`;
     const v = progress.verdict;
     const cls = v.verdict === 'PASS' ? 'pass' : 'needswork';
+    const stampLabel = v.verdict === 'PASS' ? t('stamp_pass') : t('stamp_needswork');
     return `
-      <div class="stamp ${cls}">${v.verdict}</div>
-      <div class="score-line">SCORE: ${v.overall_score} / 100 &middot; Root cause identified: ${v.root_cause_identified ? 'Yes' : 'No'}</div>
-      ${Object.entries(v.component_feedback).map(([k, val]) => `<div class="comp"><span class="mono">${k}</span><p>${val}</p></div>`).join('')}
+      <div class="stamp ${cls}">${stampLabel}</div>
+      <div class="score-line">${t('score_line', v.overall_score, v.root_cause_identified)}</div>
+      ${Object.entries(v.component_feedback).map(([k, val]) => `<div class="comp"><span class="mono">${fieldLabel(k)}</span><p>${val}</p></div>`).join('')}
       <div class="summary-block">${v.summary}</div>
     `;
   }
@@ -237,19 +282,19 @@
         const text = input.value.trim();
         if (!text) return;
         input.value = '';
-        send.disabled = true; send.textContent = '...';
+        send.disabled = true;
         try {
           await api('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ studentId, caseId, persona: activePersona, text }),
+            body: JSON.stringify({ studentId, caseId, persona: activePersona, text, lang }),
           });
           await loadState();
           renderApp();
         } catch (e) {
           alert(e.message);
         } finally {
-          send.disabled = false; send.textContent = 'Ask';
+          send.disabled = false; send.textContent = t('ask_btn');
           const c = el('chat-window'); if (c) c.scrollTop = c.scrollHeight;
         }
       };
@@ -279,13 +324,13 @@
         const docs = CASE().documents;
         const findingsWithTitles = progress.findings.map((f) => ({
           ...f,
-          evidenceTitles: f.evidence.map((id) => { const d = docs.find((x) => x.id === id); return d ? d.title : id; }),
+          evidenceTitles: f.evidence.map((id) => { const d = docs.find((x) => x.id === id); return d ? d[lang].title : id; }),
         }));
         try {
           const verdict = await api('/api/grade', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ studentId, caseId, findings: findingsWithTitles }),
+            body: JSON.stringify({ studentId, caseId, findings: findingsWithTitles, lang }),
           });
           progress.verdict = verdict;
         } catch (e) {
@@ -299,7 +344,7 @@
   function updateProgressPill() {
     const total = CASE().documents.length;
     const unlocked = progress.unlocked.length;
-    el('progress-pill').textContent = `${unlocked} / ${total} evidence unlocked`;
+    el('progress-pill').textContent = `${unlocked} / ${total}`;
   }
 
   async function startFlow() {
@@ -317,13 +362,17 @@
   el('start-btn').addEventListener('click', startFlow);
   el('student-name').addEventListener('keydown', (e) => { if (e.key === 'Enter') startFlow(); });
   el('back-to-cases').addEventListener('click', backToCaseList);
+  document.querySelectorAll('.lang-toggle-btn').forEach((b) => b.addEventListener('click', toggleLang));
   el('reset-case').addEventListener('click', async () => {
-    if (!confirm('Reset all progress for this case? This cannot be undone.')) return;
-    const defaults = { unlocked: window.CASES[caseId].documents.filter((d) => !d.locked).map((d) => d.id), messages: {}, findings: [blankFinding()], verdict: null };
+    if (!confirm(t('reset_confirm'))) return;
+    const defaults = { unlocked: CASE().documents.filter((d) => !d.locked).map((d) => d.id), messages: {}, findings: [blankFinding()], verdict: null };
     Object.keys(CASE().personas).forEach((id) => { defaults.messages[id] = []; });
     await saveState(defaults);
     openDoc = null; activeTab = 'case';
     updateProgressPill();
     renderApp();
   });
+
+  applyDir();
+  applyStaticText();
 })();

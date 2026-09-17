@@ -8,12 +8,14 @@
 </head>
 <body>
 
+  <button class="lang-toggle-btn mono" id="lang-toggle-fixed">AR</button>
+
   <div class="cover-screen" id="cover-screen">
     <div class="cover-card">
       <div class="cover-hero" id="cover-hero"></div>
-      <h1>Internal Audit Skills Lab</h1>
-      <div class="cover-sub">Al Rawda Trading Co. &middot; Internal Audit Department</div>
-      <p class="desc">Pick a case, review the evidence, interview the process owners, and build your finding.</p>
+      <h1 id="cover-title">Internal Audit Skills Lab</h1>
+      <div class="cover-sub" id="cover-sub">Al Rawda Trading Co. &middot; Internal Audit Department</div>
+      <p class="desc" id="cover-desc">Pick a case, review the evidence, interview the process owners, and build your finding.</p>
       <input type="text" id="student-name" placeholder="Enter your name to begin" />
       <button class="btn-primary" id="start-btn">Continue</button>
     </div>
@@ -21,8 +23,8 @@
 
   <div class="cover-screen app-hidden" id="case-select-screen">
     <div class="cover-card" style="max-width:640px;">
-      <div class="cover-sub">Audit Universe &middot; Al Rawda Trading Co.</div>
-      <h1 style="margin-bottom:20px;">Choose a case</h1>
+      <div class="cover-sub" id="universe-sub">Audit Universe &middot; Al Rawda Trading Co.</div>
+      <h1 id="choose-case-title" style="margin-bottom:20px;">Choose a case</h1>
       <div id="case-list" class="case-list"></div>
     </div>
   </div>
@@ -32,7 +34,7 @@
       <h1 id="app-case-title">Internal Audit Skills Lab</h1>
       <div class="case-meta">
         <span id="app-case-meta-line">CASE NO. &middot; Al Rawda Trading Co.</span>
-        <div class="progress-pill" id="progress-pill">0 / 0 evidence unlocked</div>
+        <div class="progress-pill" id="progress-pill">0 / 0</div>
       </div>
     </div>
     <div class="tabs" id="tabs"></div>
