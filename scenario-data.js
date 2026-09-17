@@ -201,6 +201,39 @@ window.CASES = {
       mona: { en: { name: 'Mona Al-Kandari', role: 'IT Operations Manager' }, ar: { name: 'منى الكندري', role: 'مديرة عمليات تقنية المعلومات' } },
     },
   },
+
+  'revenue-credit-note-fraud': {
+    caseNumber: 'AR-7204',
+    company: { en: 'Al Rawda Trading Co.', ar: 'شركة الروضة التجارية' },
+    title: { en: 'Sales Returns & Credit Note Review', ar: 'مراجعة مرتجعات المبيعات وإشعارات الدائن' },
+    department: { en: 'Sales / Revenue', ar: 'المبيعات / الإيرادات' },
+    listBlurb: { en: "One customer's 'returns' never actually came back to the warehouse.", ar: "'مرتجعات' أحد العملاء لم تصل فعلياً إلى المستودع." },
+    brief: {
+      en: "You are the internal auditor reviewing sales returns and credit note controls at Al Rawda Trading Co. One customer account has received an unusually high volume of credit notes for 'damaged/returned' goods, but the warehouse has no matching receiving records. Review the evidence, interview sales and credit control staff, and build a finding.",
+      ar: "أنت المدقق الداخلي المكلف بمراجعة ضوابط مرتجعات المبيعات وإشعارات الدائن في شركة الروضة التجارية. تلقى حساب أحد العملاء عدداً كبيراً بشكل غير معتاد من إشعارات الدائن مقابل بضاعة 'تالفة/مرتجعة'، إلا أن المستودع لا يملك أي سجلات استلام مطابقة لذلك. راجع الأدلة، قابل موظفي المبيعات وضبط الائتمان، وابنِ ملاحظتك الرقابية.",
+    },
+    documents: [
+      { id: 'credit-note', icon: 'doc',
+        en: { tag: 'Credit Note', title: 'Credit Note CN-2207', rows: [['Customer', 'Al-Manar Retail Stores'], ['Issued by', 'Bader Al-Mutairi, Sales Representative'], ['Amount', 'KD 640.000'], ['Reason given', 'Damaged goods - return accepted'], ['Approved by', 'Sarah Al-Rashidi, Credit Control Officer'], ['Date', '21 Jul 2026']] },
+        ar: { tag: 'إشعار دائن', title: 'إشعار دائن رقم CN-2207', rows: [['العميل', 'متاجر المنار للتجزئة'], ['أصدره', 'بدر المطيري، مندوب مبيعات'], ['المبلغ', '640.000 د.ك'], ['السبب المذكور', 'بضاعة تالفة - تم قبول الإرجاع'], ['اعتمدته', 'سارة الراشدي، مسؤولة ضبط الائتمان'], ['التاريخ', '21 يوليو 2026']] } },
+      { id: 'credit-note-log', icon: 'doc',
+        en: { tag: 'Credit Note Log', title: 'Credit Note Summary - Last 6 Months', rows: [["Al-Manar Retail Stores (Bader's account)", '6 credit notes, total KD 3,420'], ["Bader's other customer accounts (avg.)", '1 credit note, total KD 180'], ['Other sales reps (avg. per customer)', '1 credit note, total KD 150'], ['Pattern', 'All six credit notes cite the same reason: "damaged goods - return accepted"']] },
+        ar: { tag: 'سجل إشعارات الدائن', title: 'ملخص إشعارات الدائن - آخر 6 أشهر', rows: [['متاجر المنار للتجزئة (حساب بدر)', '6 إشعارات دائن، بإجمالي 3,420 د.ك'], ['حسابات بدر الأخرى (بالمتوسط)', 'إشعار دائن واحد، بإجمالي 180 د.ك'], ['بقية مندوبي المبيعات (متوسط لكل عميل)', 'إشعار دائن واحد، بإجمالي 150 د.ك'], ['النمط الملاحظ', 'جميع الإشعارات الستة تذكر نفس السبب: "بضاعة تالفة - تم قبول الإرجاع"']] } },
+      { id: 'returns-policy', icon: 'scale',
+        en: { tag: 'Policy Excerpt', title: 'Sales Returns Policy Section 6.4', rows: [['Step 1', 'Sales representative logs a return request with reason and quantity'], ['Step 2', 'Warehouse issues a Goods Return Note (GRN) once the physical stock is received'], ['Step 3', 'Credit Control posts the credit note only after a GRN is linked'], ['Note', 'In practice, Credit Control may post a credit note marked "urgent" before a GRN is received, to be reconciled later.']] },
+        ar: { tag: 'مقتطف من السياسة', title: 'سياسة مرتجعات المبيعات، البند 6.4', rows: [['الخطوة 1', 'يسجل مندوب المبيعات طلب إرجاع مع ذكر السبب والكمية'], ['الخطوة 2', 'يصدر المستودع إشعار استلام مرتجع (GRN) بعد استلام البضاعة فعلياً'], ['الخطوة 3', 'تقوم إدارة ضبط الائتمان بترحيل إشعار الدائن فقط بعد ربطه بإشعار الاستلام'], ['ملاحظة', 'عملياً، يمكن لإدارة ضبط الائتمان ترحيل إشعار دائن مؤشَّر بـ"عاجل" قبل استلام إشعار الاستلام، على أن تتم التسوية لاحقاً.']] } },
+      { id: 'receiving-log', icon: 'building',
+        en: { tag: 'Warehouse Receiving Log', title: 'Goods Return Note Register - Jul 2026', rows: [['GRNs linked to Al-Manar Retail Stores', '0'], ["GRNs linked to Bader's other accounts", '3, all matching credit notes issued'], ['Note', 'No physical stock from Al-Manar has been received at the warehouse in the last 6 months.']] },
+        ar: { tag: 'سجل استلام المستودع', title: 'سجل إشعارات استلام المرتجعات - يوليو 2026', rows: [['إشعارات الاستلام المرتبطة بمتاجر المنار', '0'], ['إشعارات الاستلام المرتبطة بحسابات بدر الأخرى', '3، جميعها مطابقة لإشعارات الدائن الصادرة'], ['ملاحظة', 'لم تُستلم أي بضاعة فعلية من متاجر المنار في المستودع خلال آخر 6 أشهر.']] } },
+      { id: 'kickback-messages', icon: 'mail', locked: true,
+        en: { tag: 'Correspondence', title: 'Message Thread - Bader & Al-Manar Owner', rows: [['From', 'Bader Al-Mutairi'], ['To', 'Contact saved as "Abu Fahad - Al Manar"'], ['Content', '"Send the usual to my account after the credit note goes through, same as before."'], ['Date', '20 Jul 2026, the day before CN-2207 was issued']] },
+        ar: { tag: 'مراسلات', title: 'سلسلة رسائل - بدر ومالك متاجر المنار', rows: [['من', 'بدر المطيري'], ['إلى', 'جهة اتصال محفوظة باسم "أبو فهد - المنار"'], ['المحتوى', '"حوّل المعتاد على حسابي بعد ما يمر إشعار الدائن، زي العادة."'], ['التاريخ', '20 يوليو 2026، اليوم السابق لإصدار الإشعار CN-2207']] } },
+    ],
+    personas: {
+      bader: { en: { name: 'Bader Al-Mutairi', role: 'Sales Representative' }, ar: { name: 'بدر المطيري', role: 'مندوب مبيعات' } },
+      sarah: { en: { name: 'Sarah Al-Rashidi', role: 'Credit Control Officer' }, ar: { name: 'سارة الراشدي', role: 'مسؤولة ضبط الائتمان' } },
+    },
+  },
 };
 
 window.CASE_LIST = Object.keys(window.CASES).map((id) => {
