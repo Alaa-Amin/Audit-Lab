@@ -135,6 +135,72 @@ window.CASES = {
       hamad: { en: { name: 'Hamad Al-Sabah', role: 'Payroll Manager' }, ar: { name: 'حمد الصباح', role: 'مدير الرواتب' } },
     },
   },
+
+  'inventory-writeoff-fraud': {
+    caseNumber: 'AR-5528',
+    company: { en: 'Al Rawda Trading Co.', ar: 'شركة الروضة التجارية' },
+    title: { en: 'Inventory Write-Off Review', ar: 'مراجعة شطب المخزون' },
+    department: { en: 'Warehouse & Inventory', ar: 'المستودعات والمخزون' },
+    listBlurb: { en: "Good stock keeps getting marked 'damaged.' Where does it actually go?", ar: "بضاعة سليمة يتكرر تصنيفها بأنها 'تالفة'. أين تذهب فعلياً؟" },
+    brief: {
+      en: "You are the internal auditor reviewing inventory write-off controls at Al Rawda Trading Co. Warehouse records show a pattern of large 'damaged/expired' stock write-offs approved for one warehouse controller, with no matching destruction records. Review the evidence, interview warehouse and finance staff, and build a finding.",
+      ar: "أنت المدقق الداخلي المكلف بمراجعة ضوابط شطب المخزون في شركة الروضة التجارية. تُظهر سجلات المستودع نمطاً من عمليات شطب كبيرة لبضاعة 'تالفة/منتهية الصلاحية' معتمدة لصالح أحد مراقبي المستودع، دون وجود سجلات إتلاف مطابقة لها. راجع الأدلة، قابل موظفي المستودع والمالية، وابنِ ملاحظتك الرقابية.",
+    },
+    documents: [
+      { id: 'writeoff-request', icon: 'doc',
+        en: { tag: 'Write-Off Request', title: 'Write-Off Request Form - Batch WO-118', rows: [['Submitted by', 'Yousef Al-Ansari, Warehouse Controller'], ['Date', '03 Jul 2026'], ['Product', 'Assorted canned goods, 200 units'], ['Reason given', 'Damaged in storage - water leak'], ['Approved by', 'Reem Al-Fadhli, Inventory & Finance Analyst']] },
+        ar: { tag: 'طلب شطب', title: 'نموذج طلب شطب - الدفعة رقم WO-118', rows: [['مقدَّم من', 'يوسف الأنصاري، مراقب المستودع'], ['التاريخ', '03 يوليو 2026'], ['المنتج', 'معلبات متنوعة، 200 وحدة'], ['السبب المذكور', 'تلف أثناء التخزين - تسرب مياه'], ['اعتمد من قبل', 'ريم الفاضلي، محللة المخزون والمالية']] } },
+      { id: 'writeoff-log', icon: 'doc',
+        en: { tag: 'Write-Off Log', title: 'Write-Off Log - Last 6 Months', rows: [['Yousef Al-Ansari (Warehouse Controller)', '5 write-offs, total KD 3,150'], ['Other warehouse staff (avg.)', '1 write-off, total KD 240'], ['Pattern', "Each of Yousef's write-offs is just under the KD 700 value that would require a second approver"]] },
+        ar: { tag: 'سجل الشطب', title: 'سجل الشطب - آخر 6 أشهر', rows: [['يوسف الأنصاري (مراقب المستودع)', '5 عمليات شطب، بإجمالي 3,150 د.ك'], ['بقية موظفي المستودع (بالمتوسط)', 'عملية شطب واحدة، بإجمالي 240 د.ك'], ['النمط الملاحظ', 'كل عملية شطب ليوسف تقل بقليل عن قيمة 700 د.ك التي تستوجب معتمِداً ثانياً']] } },
+      { id: 'disposal-policy', icon: 'scale',
+        en: { tag: 'Policy Excerpt', title: 'Warehouse Disposal Policy Section 5.1', rows: [['Under KD 700', 'Warehouse Controller may approve and dispose'], ['KD 700 and above', 'Requires a second approver (Finance) and a witnessed destruction log'], ['Destruction log', 'Must be signed by two employees present at disposal'], ['Note', 'Photographic evidence is required for all destroyed batches above KD 500.']] },
+        ar: { tag: 'مقتطف من السياسة', title: 'سياسة إتلاف المستودع، البند 5.1', rows: [['أقل من 700 د.ك', 'يجوز لمراقب المستودع الاعتماد والتخلص بنفسه'], ['700 د.ك فأكثر', 'يتطلب معتمِداً ثانياً (من المالية) وسجل إتلاف موثّق بشهود'], ['سجل الإتلاف', 'يجب أن يوقّعه موظفان حاضران عند التخلص من البضاعة'], ['ملاحظة', 'يُشترط توثيق مصوَّر لكل دفعة متلفة تتجاوز قيمتها 500 د.ك.']] } },
+      { id: 'cycle-count', icon: 'building',
+        en: { tag: 'Cycle Count Report', title: 'Cycle Count Variance Report - Jun 2026', rows: [['Recorded inventory (system)', 'Matches write-off records'], ["Physical destruction log entries", "0 for any of Yousef's 5 write-offs"], ['Variance flagged by', 'Quarterly cycle count team'], ['Note', 'No destruction log on file for any write-off above KD 500 this year.']] },
+        ar: { tag: 'تقرير الجرد الدوري', title: 'تقرير فروقات الجرد الدوري - يونيو 2026', rows: [['المخزون المسجل (النظام)', 'مطابق لسجلات الشطب'], ['سجلات الإتلاف الفعلية', 'لا يوجد أي سجل لأي من عمليات الشطب الخمس ليوسف'], ['الجهة التي رصدت الفارق', 'فريق الجرد الدوري الفصلي'], ['ملاحظة', 'لا يوجد سجل إتلاف موثّق لأي عملية شطب تتجاوز 500 د.ك هذا العام.']] } },
+      { id: 'buyer-messages', icon: 'mail', locked: true,
+        en: { tag: 'Correspondence', title: 'Message Thread - Yousef & External Buyer', rows: [['From', 'Yousef Al-Ansari'], ['To', 'Contact saved as "Abu Sager - Market"'], ['Content', '"Same as last time, the canned stuff. I\'ll mark it damaged in the system, come by after 6pm."'], ['Date', '02 Jul 2026, the evening before the write-off was filed']] },
+        ar: { tag: 'مراسلات', title: 'سلسلة رسائل - يوسف ومشترٍ خارجي', rows: [['من', 'يوسف الأنصاري'], ['إلى', 'جهة اتصال محفوظة باسم "أبو ساجر - السوق"'], ['المحتوى', '"نفس الطلبية السابقة، المعلبات. بسجلها تالفة بالنظام، تعال بعد الساعة 6 مساءً."'], ['التاريخ', '02 يوليو 2026، مساء اليوم السابق لتقديم طلب الشطب']] } },
+    ],
+    personas: {
+      yousef: { en: { name: 'Yousef Al-Ansari', role: 'Warehouse Controller' }, ar: { name: 'يوسف الأنصاري', role: 'مراقب المستودع' } },
+      reem: { en: { name: 'Reem Al-Fadhli', role: 'Inventory & Finance Analyst' }, ar: { name: 'ريم الفاضلي', role: 'محللة المخزون والمالية' } },
+    },
+  },
+
+  'it-change-management': {
+    caseNumber: 'AR-6091',
+    company: { en: 'Al Rawda Trading Co.', ar: 'شركة الروضة التجارية' },
+    title: { en: 'Unauthorized Production Change', ar: 'تغيير غير مصرّح به في بيئة الإنتاج' },
+    department: { en: 'Information Technology', ar: 'تقنية المعلومات' },
+    listBlurb: { en: "A 90% discount code went live. Nobody remembers approving it.", ar: 'كود خصم بنسبة 90% أصبح فعّالاً على الموقع. لا أحد يتذكر أنه اعتمده.' },
+    brief: {
+      en: "You are the internal auditor reviewing change management controls in the IT department at Al Rawda Trading Co. A steep discount code went live on the online store with no linked change request, and a spike of heavily discounted orders followed before it was caught. Review the evidence, interview IT staff, and build a finding.",
+      ar: 'أنت المدقق الداخلي المكلف بمراجعة ضوابط إدارة التغيير في إدارة تقنية المعلومات بشركة الروضة التجارية. تم تفعيل كود خصم كبير على المتجر الإلكتروني دون وجود طلب تغيير مرتبط به، وتلا ذلك ارتفاع ملحوظ في الطلبات المخفَّضة بشكل كبير قبل اكتشاف الأمر. راجع الأدلة، قابل موظفي تقنية المعلومات، وابنِ ملاحظتك الرقابية.',
+    },
+    documents: [
+      { id: 'deploy-log', icon: 'doc',
+        en: { tag: 'Deployment Record', title: 'Production Deployment Log - 14 Jul 2026', rows: [['Deployed by', 'Faisal Al-Duwaisan, Software Developer'], ['Linked change ticket', 'N/A'], ['Commit message', '"pricing update"'], ['Environment', 'Production (live store)']] },
+        ar: { tag: 'سجل النشر', title: 'سجل نشر بيئة الإنتاج - 14 يوليو 2026', rows: [['تم النشر من قبل', 'فيصل الدويسان، مطوّر برمجيات'], ['طلب التغيير المرتبط', 'لا يوجد'], ['رسالة الإيداع (Commit)', '"تحديث أسعار"'], ['البيئة', 'بيئة الإنتاج (المتجر المباشر)']] } },
+      { id: 'change-policy', icon: 'scale',
+        en: { tag: 'Policy Excerpt', title: 'IT Change Management Policy Section 3.2', rows: [['Step 1', 'Developer opens a Change Request (CR) ticket describing the change'], ['Step 2', 'A peer reviews the code'], ['Step 3', 'Change Advisory Board (CAB) approves before deployment'], ['Note', 'No change may be deployed to production without a linked, approved CR ticket.']] },
+        ar: { tag: 'مقتطف من السياسة', title: 'سياسة إدارة التغيير في تقنية المعلومات، البند 3.2', rows: [['الخطوة 1', 'يفتح المطوّر طلب تغيير (CR) يوضّح التغيير المطلوب'], ['الخطوة 2', 'يقوم زميل بمراجعة الكود'], ['الخطوة 3', 'تعتمد لجنة استشارية للتغيير (CAB) الطلب قبل النشر'], ['ملاحظة', 'لا يجوز نشر أي تغيير في بيئة الإنتاج دون طلب تغيير معتمد ومرتبط به.']] } },
+      { id: 'sales-spike', icon: 'building',
+        en: { tag: 'Sales Report', title: 'Discount Code Usage Report - 14 to 17 Jul 2026', rows: [['Code "FRIEND90"', '90% off, used 23 times'], ['All other active codes (avg.)', '10-15% off, used 4 times each'], ['Total discount value from FRIEND90', 'KD 1,780'], ['Marketing record for FRIEND90', 'None on file']] },
+        ar: { tag: 'تقرير المبيعات', title: 'تقرير استخدام أكواد الخصم - 14 إلى 17 يوليو 2026', rows: [['كود "FRIEND90"', 'خصم 90%، استُخدم 23 مرة'], ['بقية الأكواد الفعّالة (بالمتوسط)', 'خصم 10-15%، استُخدم كل منها 4 مرات'], ['إجمالي قيمة الخصم من FRIEND90', '1,780 د.ك'], ['سجل تسويقي لكود FRIEND90', 'لا يوجد']] } },
+      { id: 'access-record', icon: 'doc',
+        en: { tag: 'Access Record', title: 'System Permissions - F. Al-Duwaisan', rows: [['Developer access', 'Can write and commit code'], ['Production deploy access', 'Can push changes directly to the live environment'], ['Segregation check', 'Same account holds both permissions - no independent deploy role'], ['Access granted', 'Standard since joining, never reviewed']] },
+        ar: { tag: 'سجل الصلاحيات', title: 'صلاحيات النظام - ف. الدويسان', rows: [['صلاحية المطوّر', 'كتابة وإيداع الكود (Commit)'], ['صلاحية النشر في بيئة الإنتاج', 'نشر التغييرات مباشرة في البيئة المباشرة'], ['فحص الفصل بين المهام', 'نفس الحساب يملك الصلاحيتين معاً - لا يوجد دور نشر مستقل'], ['منح الصلاحية', 'ممنوحة بشكل معتاد منذ الالتحاق، ولم تُراجَع منذ ذلك الحين']] } },
+      { id: 'chat-thread', icon: 'mail', locked: true,
+        en: { tag: 'Correspondence', title: 'Message Thread - Faisal & Friends', rows: [['From', 'Faisal Al-Duwaisan'], ['To', 'Group chat "Gym Crew"'], ['Content', '"Use FRIEND90 at checkout, 90% off, works till the weekend. Don\'t post it anywhere public though."'], ['Date', '14 Jul 2026, same day as the deployment']] },
+        ar: { tag: 'مراسلات', title: 'سلسلة رسائل - فيصل والأصدقاء', rows: [['من', 'فيصل الدويسان'], ['إلى', 'مجموعة دردشة "شلة الجيم"'], ['المحتوى', '"استخدموا كود FRIEND90 عند الدفع، خصم 90%، شغّال لنهاية الأسبوع. بس لا تنشرونه بأي مكان عام."'], ['التاريخ', '14 يوليو 2026، نفس يوم النشر']] } },
+    ],
+    personas: {
+      faisal: { en: { name: 'Faisal Al-Duwaisan', role: 'Software Developer' }, ar: { name: 'فيصل الدويسان', role: 'مطوّر برمجيات' } },
+      mona: { en: { name: 'Mona Al-Kandari', role: 'IT Operations Manager' }, ar: { name: 'منى الكندري', role: 'مديرة عمليات تقنية المعلومات' } },
+    },
+  },
 };
 
 window.CASE_LIST = Object.keys(window.CASES).map((id) => {
