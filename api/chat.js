@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { studentId, caseId, persona, text } = req.body || {};
+    const { studentId, caseId, persona, text, lang } = req.body || {};
     if (!studentId || !caseId || !persona || !text) {
       return res.status(400).json({ error: 'studentId, caseId, persona and text are all required' });
     }
@@ -17,6 +17,11 @@ module.exports = async (req, res) => {
     if (!scenario) return res.status(400).json({ error: 'Unknown case' });
     const personaDef = scenario.personas[persona];
     if (!personaDef) return res.status(400).json({ error: 'Unknown persona' });
+
+    const langInstruction = lang === 'ar'
+      ? "\n\nIMPORTANT: Respond entirely in Modern Standard Arabic suitable for a professional Kuwaiti workplace, while staying fully in character. Do not respond in English, and do not mix languages."
+      : '';
+    const systemPrompt = personaDef.system + langInstruction;
 
     const progress = await loadProgress(studentId, caseId);
     const history = progress.messages[persona] || [];
@@ -26,7 +31,7 @@ module.exports = async (req, res) => {
       .map((m) => ({ role: m.role === 'user' ? 'user' : 'model', parts: [{ text: m.text }] }));
     contents.push({ role: 'user', parts: [{ text }] });
 
-    let reply = await callGemini(personaDef.system, contents, 500);
+    let reply = await callGemini(systemPrompt, contents, 500);
 
     let unlockedId = null;
     const unlockMatch = reply.match(/^\[\[UNLOCK:([a-z0-9-]+)\]\]\s*/i);

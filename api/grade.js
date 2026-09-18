@@ -9,12 +9,17 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { studentId, caseId, findings } = req.body || {};
+    const { studentId, caseId, findings, lang } = req.body || {};
     if (!studentId || !caseId || !Array.isArray(findings) || findings.length === 0) {
       return res.status(400).json({ error: 'studentId, caseId and at least one finding are required' });
     }
     const scenario = SCENARIOS[caseId];
     if (!scenario) return res.status(400).json({ error: 'Unknown case' });
+
+    const langInstruction = lang === 'ar'
+      ? "\n\nIMPORTANT: Write the \"component_feedback\" values and the \"summary\" value in Modern Standard Arabic suitable for a professional Kuwaiti workplace. Keep the JSON keys, the \"verdict\" value (exactly \"PASS\" or \"NEEDS WORK\", in English), and \"root_cause_identified\" (true/false) exactly as specified - only the human-readable feedback text should be in Arabic."
+      : '';
+    const gradingSystem = scenario.gradingSystem + langInstruction;
 
     const submissionText = findings
       .map((f, i) => {
@@ -23,7 +28,7 @@ module.exports = async (req, res) => {
       })
       .join('\n\n');
 
-    const raw = await callGemini(scenario.gradingSystem, [{ role: 'user', parts: [{ text: submissionText }] }], 800);
+    const raw = await callGemini(gradingSystem, [{ role: 'user', parts: [{ text: submissionText }] }], 800);
     const cleaned = raw.replace(/```json|```/g, '').trim();
 
     let verdict;

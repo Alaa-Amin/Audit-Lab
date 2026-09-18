@@ -206,8 +206,10 @@
     return `
       <div class="persona-select">${personaButtons}</div>
       <div class="chat-window" id="chat-window">${msgHtml}</div>
+      <div class="hint-box app-hidden" id="hint-box"></div>
       <div class="chat-input-row">
         <input type="text" id="chat-text" placeholder="${t('ask_placeholder')}" />
+        <button class="btn secondary" id="hint-btn">${t('hint_btn')}</button>
         <button class="btn" id="chat-send">${t('ask_btn')}</button>
       </div>
     `;
@@ -306,6 +308,25 @@
       };
       send.addEventListener('click', doSend);
       input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSend(); });
+
+      const hintBtn = el('hint-btn');
+      hintBtn.addEventListener('click', async () => {
+        hintBtn.disabled = true;
+        try {
+          const res = await api('/api/hint', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ caseId, persona: activePersona, lang }),
+          });
+          const box = el('hint-box');
+          box.textContent = `${t('hint_label')} ${res.hint}`;
+          box.classList.remove('app-hidden');
+        } catch (e) {
+          alert(e.message);
+        } finally {
+          hintBtn.disabled = false;
+        }
+      });
     }
 
     if (activeTab === 'findings') {
